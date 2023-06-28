@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "713932239069",
+    "project_id": "text-extractor-ml-app",
+    "storage_bucket": "text-extractor-ml-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713932239069:android:d6f1f0299876d3337a6b34",
+        "android_client_info": {
+          "package_name": "com.example.text_recognition_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713932239069-vt0rrb44m9c8ibv0vnimp4mst1nvhfrs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJeKPWwXgvrLpWM76g1hiLD73sspAt8XM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713932239069-vt0rrb44m9c8ibv0vnimp4mst1nvhfrs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
