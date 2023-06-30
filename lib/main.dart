@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:text_recognition_app/home_screen.dart';
 
-import 'home_screen.dart';
 
 late Size mq;
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           seedColor: const Color(0xff01293f),
         ),
       ),
-      home: const HomeScreen(),
+      home:  HomeScreen(),
     );
   }
 }

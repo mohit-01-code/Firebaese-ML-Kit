@@ -49,6 +49,7 @@ dev_dependencies:
   image_picker: ^1.0.0
   google_ml_kit: ^0.15.0
   google_mlkit_image_labeling: ^0.7.0
+  image: ^4.0.17
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
