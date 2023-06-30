@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:text_recognition_app/ml_screen.dart';
 
-class  HomeScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   List<String> itemsList = [
     'Text Scanner',

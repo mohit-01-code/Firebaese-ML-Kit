@@ -33,9 +33,7 @@ class _MlScreenState extends State<MlScreen> {
               Image.asset('assets/images/img.png')
             else
               Image.file(_pickedImageFile!),
-            const SizedBox(
-              height: 10
-            ),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -56,9 +54,7 @@ class _MlScreenState extends State<MlScreen> {
                     icon: const Icon(Icons.camera_alt)),
               ],
             ),
-            const SizedBox(
-              height: 10
-            ),
+            const SizedBox(height: 10),
             Text(scannedText),
           ],
         ),
@@ -135,7 +131,8 @@ class _MlScreenState extends State<MlScreen> {
 
   void decodeBarCode() {}
 
-  void detectFace() async{
-    Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>const FaceBlurScreen()));
+  void detectFace() async {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => const FaceBlurScreen()));
   }
 }

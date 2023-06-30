@@ -113,48 +113,11 @@ class _FaceBlurScreenState extends State<FaceBlurScreen> {
     setState(() {
       _isLoading = true;
     });
-
-    final blurredImage = await _blurFacesOnImage();
-    _showBlurredImage(blurredImage);
+    _showBlurredImage(_image);
 
     setState(() {
       _isLoading = false;
     });
-  }
-
-  Future<ui.Image?> _blurFacesOnImage() async {
-    final imageByteData =
-        await _image!.toByteData(format: ui.ImageByteFormat.png);
-    final imageBytes = Uint8List.view(imageByteData!.buffer);
-
-    final recorder = ui.PictureRecorder();
-    final canvas = Canvas(recorder);
-    canvas.drawImage(_image!, Offset.zero, Paint());
-
-    for (var face in _faces) {
-      final faceRect = face.boundingBox;
-      final blurredFaceImage = await _getBlurredImage(imageBytes, faceRect);
-
-      canvas.drawImageRect(
-        blurredFaceImage,
-        Rect.fromLTRB(0, 0, blurredFaceImage.width.toDouble(),
-            blurredFaceImage.height.toDouble()),
-        faceRect,
-        Paint(),
-      );
-    }
-
-    final picture = recorder.endRecording();
-    return picture.toImage(_image!.width, _image!.height);
-  }
-
-  Future<ui.Image> _getBlurredImage(Uint8List imageBytes, Rect faceRect) async {
-    final blurredImageBytes = await BlurHelper.applyBlur(imageBytes, faceRect);
-    final codec =
-        await ui.instantiateImageCodec(Uint8List.fromList(blurredImageBytes));
-
-    final frameInfo = await codec.getNextFrame();
-    return frameInfo.image;
   }
 
   void _showBlurredImage(ui.Image? blurredImage) {
@@ -171,7 +134,7 @@ class _FaceBlurScreenState extends State<FaceBlurScreen> {
                       width: blurredImage.width.toDouble(),
                       height: blurredImage.height.toDouble(),
                       child: CustomPaint(
-                        painter: FacePainter(blurredImage, _faces),
+                        painter: BlurPainter(blurredImage, _faces),
                       ),
                     ),
                   )
@@ -215,23 +178,31 @@ class FacePainter extends CustomPainter {
   }
 }
 
-class BlurHelper {
-  static const MethodChannel _channel = MethodChannel('blur_channel');
+class BlurPainter extends CustomPainter {
+  final ui.Image image;
+  final List<Face> faces;
+  final blurFilter = ui.ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0);
+  BlurPainter(this.image, this.faces);
 
-  static Future<List<int>> applyBlur(
-      Uint8List imageBytes, Rect faceRect) async {
-    final blurParams = {
-      'imageBytes': imageBytes,
-      'faceRect': {
-        'left': faceRect.left,
-        'top': faceRect.top,
-        'right': faceRect.right,
-        'bottom': faceRect.bottom,
-      },
-    };
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawImage(image, Offset.zero, Paint()..style = PaintingStyle.stroke);
 
-    final List<dynamic> result =
-        await _channel.invokeMethod('applyBlur', blurParams);
-    return List<int>.from(result);
+    for (Face face in faces) {
+      canvas.saveLayer(face.boundingBox, Paint()..imageFilter = blurFilter);
+      canvas.drawImageRect(
+        image,
+        face.boundingBox,
+        face.boundingBox,
+        Paint(),
+      );
+      canvas.restore();
+    }
   }
+
+  @override
+  bool shouldRepaint(FacePainter oldDelegate) {
+    return oldDelegate.image != image || oldDelegate.faces != faces;
+  }
+
 }
